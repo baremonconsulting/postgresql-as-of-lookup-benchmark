@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+*.zip binary
+results/** linguist-generated
+figures/source/as-of-lookup-results.html linguist-generated

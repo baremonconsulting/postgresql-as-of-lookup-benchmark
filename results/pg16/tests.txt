@@ -1,0 +1,13 @@
+edge: band boundary, rounding, local day and missing rate (window)|PASS
+edge: band boundary, rounding, local day and missing rate (DISTINCT ON)|PASS
+edge: band boundary, rounding, local day and missing rate (LATERAL)|PASS
+edge: band boundary, rounding, local day and missing rate (validity periods)|PASS
+edge: LEFT JOIN LATERAL keeps the shipment without a rate|PASS
+edge: a UTC day picks the previous price list for shipment 4|PASS
+edge: changed band boundaries are rejected by the exclusion constraint|PASS
+full data: window matches shipment_charge for every shipment (4000000 shipments)|PASS
+full data: DISTINCT ON matches shipment_charge for every shipment (4000000 shipments)|PASS
+full data: LATERAL matches shipment_charge for every shipment (4000000 shipments)|PASS
+full data: method 3a with a window function matches shipment_charge for the key-account report (28206 shipments)|PASS
+full data: method 3a with DISTINCT ON matches shipment_charge for the key-account report (28206 shipments)|PASS
+full data: method 3b matches shipment_charge for the key-account report (28206 shipments)|PASS

@@ -1,0 +1,41 @@
+Finalize GroupAggregate  (cost=77004.07..78395.82 rows=5000 width=85) (actual rows=5000 loops=1)
+  Group Key: c.customer_name
+  Buffers: shared hit=9785 read=23753
+  ->  Gather Merge  (cost=77004.07..78170.82 rows=10000 width=85) (actual rows=15000 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=9785 read=23753
+        ->  Sort  (cost=76004.05..76016.55 rows=5000 width=85) (actual rows=5000 loops=3)
+              Sort Key: c.customer_name
+              Sort Method: quicksort  Memory: 1052kB
+              Buffers: shared hit=9785 read=23753
+              Worker 0:  Sort Method: quicksort  Memory: 1052kB
+              Worker 1:  Sort Method: quicksort  Memory: 1052kB
+              ->  Partial HashAggregate  (cost=75621.86..75696.86 rows=5000 width=85) (actual rows=5000 loops=3)
+                    Group Key: c.customer_name
+                    Batches: 1  Memory Usage: 3793kB
+                    Buffers: shared hit=9767 read=23753
+                    Worker 0:  Batches: 1  Memory Usage: 3793kB
+                    Worker 1:  Batches: 1  Memory Usage: 3793kB
+                    ->  Hash Join  (cost=166.93..58955.79 rows=1666607 width=24) (actual rows=1333333 loops=3)
+                          Hash Cond: (sc.ship_day = d.day)
+                          Buffers: shared hit=9767 read=23753
+                          ->  Hash Join  (cost=146.50..54535.12 rows=1666607 width=28) (actual rows=1333333 loops=3)
+                                Hash Cond: (sc.customer_id = c.customer_id)
+                                Buffers: shared hit=9723 read=23753
+                                ->  Parallel Seq Scan on shipment_charge sc  (cost=0.00..50010.07 rows=1666607 width=19) (actual rows=1333333 loops=3)
+                                      Buffers: shared hit=9591 read=23753
+                                ->  Hash  (cost=84.00..84.00 rows=5000 width=17) (actual rows=5000 loops=3)
+                                      Buckets: 8192  Batches: 1  Memory Usage: 318kB
+                                      Buffers: shared hit=102
+                                      ->  Seq Scan on customer c  (cost=0.00..84.00 rows=5000 width=17) (actual rows=5000 loops=3)
+                                            Buffers: shared hit=102
+                          ->  Hash  (cost=11.30..11.30 rows=730 width=4) (actual rows=730 loops=3)
+                                Buckets: 1024  Batches: 1  Memory Usage: 34kB
+                                Buffers: shared hit=12
+                                ->  Seq Scan on dim_date d  (cost=0.00..11.30 rows=730 width=4) (actual rows=730 loops=3)
+                                      Buffers: shared hit=12
+Planning:
+  Buffers: shared hit=355
+Planning Time: 0.875 ms
+Execution Time: 1480.211 ms

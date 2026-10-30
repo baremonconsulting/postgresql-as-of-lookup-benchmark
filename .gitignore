@@ -1,0 +1,4 @@
+# Temporary cluster of run.sh (removed on exit; left behind only if the script is killed)
+pgdata_*/
+__pycache__/
+.DS_Store

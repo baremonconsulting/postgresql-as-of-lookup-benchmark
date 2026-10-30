@@ -1,0 +1,11 @@
+query,run,execution_time_ms
+a2_distinct_on,1,41103.289
+a2_distinct_on,2,38966.926
+a2_distinct_on,3,39817.871
+a2_distinct_on,4,39253.269
+a2_distinct_on,5,39712.957
+b2_distinct_on,1,43192.946
+b2_distinct_on,2,42624.488
+b2_distinct_on,3,43237.997
+b2_distinct_on,4,46010.294
+b2_distinct_on,5,42158.896

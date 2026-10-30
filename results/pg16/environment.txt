@@ -1,0 +1,51 @@
+# server
+PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+
+# settings
+TimeZone = Europe/Prague
+default_statistics_target = 100
+effective_cache_size = 4GB
+enable_memoize = on
+from_collapse_limit = 8
+geqo_threshold = 12
+jit = on
+jit_above_cost = 100000
+jit_inline_above_cost = 500000
+jit_optimize_above_cost = 500000
+join_collapse_limit = 8
+maintenance_work_mem = 64MB
+max_parallel_workers = 8
+max_parallel_workers_per_gather = 2
+max_worker_processes = 8
+random_page_cost = 4
+seq_page_cost = 1
+shared_buffers = 128MB
+work_mem = 4MB
+
+# tables (rows, size)
+customer|5000|312 kB
+dim_date|730|72 kB
+zone|70|48 kB
+rate_card|240|56 kB
+rate_card_period|240|56 kB
+shipment|4000000|322 MB
+shipment_charge|4000000|261 MB
+shipment_stored|4000000|355 MB
+
+# indexes and constraints
+customer_pkey ON customer
+dim_date_pkey ON dim_date
+rate_card_period_pkey ON rate_card_period
+rate_card_period_zone_id_numrange_daterange_excl ON rate_card_period
+rate_card_pkey ON rate_card
+shipment_charge_pkey ON shipment_charge
+shipment_pkey ON shipment
+shipment_stored_pkey ON shipment_stored
+zone_pkey ON zone
+rate_card_period: EXCLUDE USING gist (zone_id WITH =, numrange(kg_from, kg_to, '[)'::text) WITH &&, daterange(valid_from, valid_to, '[)'::text) WITH &&)
+
+# machine
+2
+model name	: Intel(R) Xeon(R) Processor @ 2.10GHz
+MemTotal:        8220248 kB
+Linux 6.18.44-fc-v185

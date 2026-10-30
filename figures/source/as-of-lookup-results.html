@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>As-of lookup results</title>
+<style>
+html, body { margin: 0; background: #FFFFFF; }
+body { width: 1200px; height: 904px; font-family: Inter, Arial, sans-serif; color: #112B3C; position: relative; }
+.wrap { padding: 40px 40px 0; }
+h1 { font-size: 32px; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+.sub { font-size: 18px; line-height: 1.4; color: #586570; margin: 10px 0 0; }
+.legend { display: flex; gap: 30px; margin-top: 18px; font-size: 18px; color: #112B3C; }
+.legend span { display: inline-flex; align-items: center; gap: 10px; }
+.dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; }
+svg { position: absolute; left: 0; top: 0; }
+.tick { font-size: 16px; fill: #586570; font-variant-numeric: tabular-nums; }
+.group { font-size: 14px; font-weight: 600; letter-spacing: .08em; fill: #586570; }
+.num { font-size: 19px; font-weight: 700; fill: #112B3C; }
+.name { font-size: 19px; fill: #112B3C; }
+.val { font-size: 16px; fill: #112B3C; font-variant-numeric: tabular-nums; }
+.note { font-size: 14px; fill: #7A8792; font-style: italic; }
+.foot { position: absolute; left: 40px; right: 40px; bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; font-size: 14px; line-height: 1.45; color: #586570; }
+</style></head><body>
+<div class="wrap">
+  <h1>Same report results, different execution times</h1>
+  <p class="sub">Median report execution time of each method, logarithmic scale. PostgreSQL 18.6, default settings, 2 vCPUs, 8 GB RAM.</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#112B3C"></i>Key-account report (0.7% of shipments)</span>
+    <span><i class="dot" style="background:#F66B0F"></i>Full-history report (all 4 million shipments)</span>
+  </div>
+</div>
+<svg width="1200" height="904" viewBox="0 0 1200 904" role="img" aria-label="Median report execution times per method">
+<line x1="432.0" y1="188" x2="432.0" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="432.0" y="812" text-anchor="middle" class="tick">0.1 s</text>
+<line x1="523.9" y1="188" x2="523.9" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="523.9" y="812" text-anchor="middle" class="tick">0.3</text>
+<line x1="624.7" y1="188" x2="624.7" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="624.7" y="812" text-anchor="middle" class="tick">1</text>
+<line x1="716.6" y1="188" x2="716.6" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="716.6" y="812" text-anchor="middle" class="tick">3</text>
+<line x1="817.3" y1="188" x2="817.3" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="817.3" y="812" text-anchor="middle" class="tick">10</text>
+<line x1="909.3" y1="188" x2="909.3" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="909.3" y="812" text-anchor="middle" class="tick">30</text>
+<line x1="1010.0" y1="188" x2="1010.0" y2="782" stroke="#E3E9ED" stroke-width="1"/>
+<text x="1010.0" y="812" text-anchor="middle" class="tick">100 s</text>
+<text x="40" y="212" class="group">THE RULE STAYS IN THE QUERY</text>
+<line x1="40" y1="236.0" x2="1160" y2="236.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="274.0" class="num">1</text>
+<text x="82" y="274.0" class="name">Window function, before filters</text>
+<line x1="937.7" y1="267.0" x2="946.2" y2="267.0" stroke="#CBD6DE" stroke-width="2" stroke-linecap="round"/>
+<circle cx="937.7" cy="261.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="946.2" cy="273.0" r="9" fill="#F66B0F" stroke="#FFFFFF" stroke-width="2"/>
+<text x="919.7" y="273.0" text-anchor="end" class="val">42.1 s</text>
+<text x="964.2" y="273.0" class="val">46.6 s</text>
+<line x1="40" y1="298.0" x2="1160" y2="298.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="336.0" class="num">2</text>
+<text x="82" y="336.0" class="name">DISTINCT ON, before filters</text>
+<line x1="928.3" y1="329.0" x2="932.5" y2="329.0" stroke="#CBD6DE" stroke-width="2" stroke-linecap="round"/>
+<circle cx="928.3" cy="323.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="932.5" cy="335.0" r="9" fill="#F66B0F" stroke="#FFFFFF" stroke-width="2"/>
+<text x="910.3" y="335.0" text-anchor="end" class="val">37.7 s</text>
+<text x="950.5" y="335.0" class="val">39.6 s</text>
+<line x1="40" y1="360.0" x2="1160" y2="360.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="398.0" class="num">3a</text>
+<text x="82" y="398.0" class="name">Window function, joins inside</text>
+<circle cx="598.7" cy="391.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<text x="616.7" y="397.0" class="val">0.73 s</text>
+<text x="1160" y="397.0" text-anchor="end" class="note">no full-history variant</text>
+<line x1="40" y1="422.0" x2="1160" y2="422.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="460.0" class="num">3a</text>
+<text x="82" y="460.0" class="name">DISTINCT ON, joins inside</text>
+<circle cx="588.7" cy="453.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<text x="606.7" y="459.0" class="val">0.65 s</text>
+<text x="1160" y="459.0" text-anchor="end" class="note">no full-history variant</text>
+<line x1="40" y1="484.0" x2="1160" y2="484.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="522.0" class="num">3b</text>
+<text x="82" y="522.0" class="name">Pushable date condition</text>
+<circle cx="812.0" cy="515.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<text x="830.0" y="521.0" class="val">9.38 s</text>
+<text x="1160" y="521.0" text-anchor="end" class="note">no full-history variant</text>
+<line x1="40" y1="546.0" x2="1160" y2="546.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="584.0" class="num">4</text>
+<text x="82" y="584.0" class="name">Correlated LATERAL lookup</text>
+<line x1="603.4" y1="577.0" x2="972.4" y2="577.0" stroke="#CBD6DE" stroke-width="2" stroke-linecap="round"/>
+<circle cx="603.4" cy="577.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="972.4" cy="577.0" r="9" fill="#F66B0F" stroke="#FFFFFF" stroke-width="2"/>
+<text x="585.4" y="583.0" text-anchor="end" class="val">0.78 s</text>
+<text x="990.4" y="583.0" class="val">63.8 s</text>
+<text x="40" y="634" class="group">THE RULE MOVES INTO THE DATA MODEL OR THE LOAD PROCESS</text>
+<line x1="40" y1="658.0" x2="1160" y2="658.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="696.0" class="num">5</text>
+<text x="82" y="696.0" class="name">Validity periods</text>
+<line x1="573.6" y1="689.0" x2="920.0" y2="689.0" stroke="#CBD6DE" stroke-width="2" stroke-linecap="round"/>
+<circle cx="573.6" cy="689.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="920.0" cy="689.0" r="9" fill="#F66B0F" stroke="#FFFFFF" stroke-width="2"/>
+<text x="555.6" y="695.0" text-anchor="end" class="val">0.54 s</text>
+<text x="938.0" y="695.0" class="val">34.1 s</text>
+<line x1="40" y1="720.0" x2="1160" y2="720.0" stroke="#F2F5F7" stroke-width="1"/>
+<text x="40" y="758.0" class="num">6</text>
+<text x="82" y="758.0" class="name">Reads prices stored at load time</text>
+<line x1="507.5" y1="751.0" x2="647.3" y2="751.0" stroke="#CBD6DE" stroke-width="2" stroke-linecap="round"/>
+<circle cx="507.5" cy="751.0" r="9" fill="#112B3C" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="647.3" cy="751.0" r="9" fill="#F66B0F" stroke="#FFFFFF" stroke-width="2"/>
+<text x="489.5" y="757.0" text-anchor="end" class="val">0.25 s</text>
+<text x="665.3" y="757.0" class="val">1.31 s</text>
+</svg>
+<div class="foot"><span>Five interleaved runs per query after a warm-up. Report execution times only: method 6 excludes the initial pricing<br>of the history (43.9 s) and any refresh or correction. Scripts and raw EXPLAIN output are in the benchmark package.</span><span>baremon.eu</span></div>
+</body></html>

@@ -1,0 +1,45 @@
+Finalize GroupAggregate  (cost=55830.65..55913.28 rows=250 width=85) (actual rows=250.00 loops=1)
+  Group Key: c.customer_name
+  Buffers: shared hit=6835 read=26631
+  ->  Gather Merge  (cost=55830.65..55900.53 rows=600 width=85) (actual rows=750.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=6835 read=26631
+        ->  Sort  (cost=54830.63..54831.25 rows=250 width=85) (actual rows=250.00 loops=3)
+              Sort Key: c.customer_name
+              Sort Method: quicksort  Memory: 66kB
+              Buffers: shared hit=6835 read=26631
+              Worker 0:  Sort Method: quicksort  Memory: 66kB
+              Worker 1:  Sort Method: quicksort  Memory: 66kB
+              ->  Partial HashAggregate  (cost=54816.92..54820.67 rows=250 width=85) (actual rows=250.00 loops=3)
+                    Group Key: c.customer_name
+                    Batches: 1  Memory Usage: 320kB
+                    Buffers: shared hit=6817 read=26631
+                    Worker 0:  Batches: 1  Memory Usage: 320kB
+                    Worker 1:  Batches: 1  Memory Usage: 320kB
+                    ->  Hash Join  (cost=113.89..54713.10 rows=10382 width=24) (actual rows=9402.00 loops=3)
+                          Hash Cond: (sc.ship_day = d.day)
+                          Buffers: shared hit=6817 read=26631
+                          ->  Hash Join  (cost=99.62..54478.95 rows=83283 width=28) (actual rows=66587.67 loops=3)
+                                Hash Cond: (sc.customer_id = c.customer_id)
+                                Buffers: shared hit=6805 read=26631
+                                ->  Parallel Seq Scan on shipment_charge sc  (cost=0.00..50000.63 rows=1666663 width=19) (actual rows=1333333.33 loops=3)
+                                      Buffers: shared hit=6703 read=26631
+                                ->  Hash  (cost=96.50..96.50 rows=250 width=17) (actual rows=250.00 loops=3)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 21kB
+                                      Buffers: shared hit=102
+                                      ->  Seq Scan on customer c  (cost=0.00..96.50 rows=250 width=17) (actual rows=250.00 loops=3)
+                                            Filter: (segment = 'Enterprise'::text)
+                                            Rows Removed by Filter: 4750
+                                            Buffers: shared hit=102
+                          ->  Hash  (cost=13.12..13.12 rows=91 width=4) (actual rows=91.00 loops=3)
+                                Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                                Buffers: shared hit=12
+                                ->  Seq Scan on dim_date d  (cost=0.00..13.12 rows=91 width=4) (actual rows=91.00 loops=3)
+                                      Filter: (fiscal_period = '2026-Q2'::text)
+                                      Rows Removed by Filter: 639
+                                      Buffers: shared hit=12
+Planning:
+  Buffers: shared hit=378
+Planning Time: 0.962 ms
+Execution Time: 253.429 ms

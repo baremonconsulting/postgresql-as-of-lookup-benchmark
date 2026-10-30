@@ -1,0 +1,68 @@
+GroupAggregate  (cost=799867.61..799992.55 rows=250 width=85) (actual rows=250 loops=1)
+  Group Key: c.customer_name
+  Buffers: shared hit=9507645 read=52190
+  ->  Sort  (cost=799867.61..799891.85 rows=9695 width=77) (actual rows=28206 loops=1)
+        Sort Key: c.customer_name
+        Sort Method: quicksort  Memory: 2306kB
+        Buffers: shared hit=9507645 read=52190
+        ->  Hash Join  (cost=1115.54..799225.66 rows=9695 width=77) (actual rows=28206 loops=1)
+              Hash Cond: ((((s.shipped_at AT TIME ZONE 'Europe/Berlin'::text))::date) = d.day)
+              Buffers: shared hit=9507642 read=52190
+              ->  Hash Join  (cost=1101.28..799006.04 rows=77777 width=81) (actual rows=199763 loops=1)
+                    Hash Cond: (s.customer_id = c.customer_id)
+                    Buffers: shared hit=9507642 read=52186
+                    ->  Unique  (cost=1001.66..779264.31 rows=1555536 width=116) (actual rows=4000000 loops=1)
+                          Buffers: shared hit=9507642 read=52152
+                          ->  Gather Merge  (cost=1001.66..775375.47 rows=1555536 width=116) (actual rows=14318273 loops=1)
+                                Workers Planned: 2
+                                Workers Launched: 2
+                                Buffers: shared hit=9507642 read=52152
+                                ->  Incremental Sort  (cost=1.63..594828.00 rows=648140 width=116) (actual rows=4772758 loops=3)
+                                      Sort Key: s.shipment_id, r.valid_from DESC
+                                      Presorted Key: s.shipment_id
+                                      Full-sort Groups: 142178  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+                                      Buffers: shared hit=9507642 read=52152
+                                      Worker 0:  Full-sort Groups: 142206  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+                                      Worker 1:  Full-sort Groups: 142184  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+                                      ->  Nested Loop  (cost=0.75..565661.70 rows=648140 width=116) (actual rows=4772758 loops=3)
+                                            Buffers: shared hit=9507542 read=52152
+                                            ->  Nested Loop  (cost=0.58..183282.25 rows=583326 width=42) (actual rows=1333333 loops=3)
+                                                  Buffers: shared hit=11226 read=52152
+                                                  ->  Parallel Index Scan using shipment_pkey on shipment s  (cost=0.43..121765.64 rows=1666646 width=44) (actual rows=1333333 loops=3)
+                                                        Buffers: shared hit=10805 read=52151
+                                                  ->  Memoize  (cost=0.15..0.17 rows=1 width=7) (actual rows=1 loops=4000000)
+                                                        Cache Key: "left"(s.dest_postcode, 2)
+                                                        Cache Mode: logical
+                                                        Hits: 1333268  Misses: 70  Evictions: 0  Overflows: 0  Memory Usage: 8kB
+                                                        Buffers: shared hit=421 read=1
+                                                        Worker 0:  Hits: 1333254  Misses: 70  Evictions: 0  Overflows: 0  Memory Usage: 8kB
+                                                        Worker 1:  Hits: 1333268  Misses: 70  Evictions: 0  Overflows: 0  Memory Usage: 8kB
+                                                        ->  Index Scan using zone_pkey on zone z  (cost=0.14..0.16 rows=1 width=7) (actual rows=1 loops=210)
+                                                              Index Cond: (postcode_prefix = "left"(s.dest_postcode, 2))
+                                                              Buffers: shared hit=421 read=1
+                                            ->  Index Scan using rate_card_pkey on rate_card r  (cost=0.17..0.60 rows=1 width=27) (actual rows=4 loops=4000000)
+                                                  Index Cond: ((zone_id = z.zone_id) AND (kg_from <= ceil(GREATEST(s.weight_kg, ((((s.length_cm * s.width_cm) * s.height_cm))::numeric / 5000.0)))) AND (valid_from <= ((s.shipped_at AT TIME ZONE 'Europe/Berlin'::text))::date))
+                                                  Filter: (ceil(GREATEST(s.weight_kg, ((((s.length_cm * s.width_cm) * s.height_cm))::numeric / 5000.0))) < kg_to)
+                                                  Rows Removed by Filter: 11
+                                                  Buffers: shared hit=9496316
+                    ->  Hash  (cost=96.50..96.50 rows=250 width=17) (actual rows=250 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 21kB
+                          Buffers: shared read=34
+                          ->  Seq Scan on customer c  (cost=0.00..96.50 rows=250 width=17) (actual rows=250 loops=1)
+                                Filter: (segment = 'Enterprise'::text)
+                                Rows Removed by Filter: 4750
+                                Buffers: shared read=34
+              ->  Hash  (cost=13.12..13.12 rows=91 width=4) (actual rows=91 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                    Buffers: shared read=4
+                    ->  Seq Scan on dim_date d  (cost=0.00..13.12 rows=91 width=4) (actual rows=91 loops=1)
+                          Filter: (fiscal_period = '2026-Q2'::text)
+                          Rows Removed by Filter: 639
+                          Buffers: shared read=4
+Planning:
+  Buffers: shared hit=388 read=40
+Planning Time: 1.497 ms
+JIT:
+  Functions: 83
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+Execution Time: 39712.957 ms

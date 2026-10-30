@@ -1,0 +1,70 @@
+GroupAggregate  (cost=721750.09..721751.41 rows=48 width=85) (actual rows=250.00 loops=1)
+  Group Key: c.customer_name
+  Buffers: shared hit=9512266 read=25423
+  ->  Sort  (cost=721750.09..721750.21 rows=48 width=77) (actual rows=28206.00 loops=1)
+        Sort Key: c.customer_name
+        Sort Method: quicksort  Memory: 2085kB
+        Buffers: shared hit=9512266 read=25423
+        ->  Hash Join  (cost=431669.34..721748.75 rows=48 width=77) (actual rows=28206.00 loops=1)
+              Hash Cond: (candidates.ship_day = d.day)
+              Buffers: shared hit=9512263 read=25423
+              ->  Hash Join  (cost=431655.08..721733.45 rows=389 width=81) (actual rows=199763.00 loops=1)
+                    Hash Cond: (candidates.customer_id = c.customer_id)
+                    Buffers: shared hit=9512259 read=25423
+                    ->  Subquery Scan on candidates  (cost=431555.45..721613.39 rows=7778 width=72) (actual rows=4000000.00 loops=1)
+                          Filter: (candidates.rn = 1)
+                          Buffers: shared hit=9512225 read=25423
+                          ->  WindowAgg  (cost=431555.45..702169.01 rows=1555550 width=124) (actual rows=4000000.00 loops=1)
+                                Window: w1 AS (PARTITION BY s.shipment_id ORDER BY r.valid_from ROWS UNBOUNDED PRECEDING)
+                                Run Condition: (row_number() OVER w1 <= 1)
+                                Storage: Memory  Maximum Storage: 17kB
+                                Buffers: shared hit=9512225 read=25423
+                                ->  Gather Merge  (cost=431555.45..612724.89 rows=1555550 width=52) (actual rows=14318273.00 loops=1)
+                                      Workers Planned: 2
+                                      Workers Launched: 2
+                                      Buffers: shared hit=9512225 read=25423
+                                      ->  Sort  (cost=430555.43..432175.80 rows=648146 width=52) (actual rows=4772757.67 loops=3)
+                                            Sort Key: s.shipment_id, r.valid_from DESC
+                                            Sort Method: quicksort  Memory: 527320kB
+                                            Buffers: shared hit=9512225 read=25423
+                                            Worker 0:  Sort Method: quicksort  Memory: 547332kB
+                                            Worker 1:  Sort Method: quicksort  Memory: 521927kB
+                                            ->  Nested Loop  (cost=2.74..367990.03 rows=648146 width=52) (actual rows=4772757.67 loops=3)
+                                                  Buffers: shared hit=9512189 read=25423
+                                                  ->  Hash Join  (cost=2.58..62574.58 rows=583331 width=42) (actual rows=1333333.33 loops=3)
+                                                        Hash Cond: ("left"(s.dest_postcode, 2) = z.postcode_prefix)
+                                                        Buffers: shared hit=15800 read=25423
+                                                        ->  Parallel Seq Scan on shipment s  (cost=0.00..57886.61 rows=1666661 width=44) (actual rows=1333333.33 loops=3)
+                                                              Buffers: shared hit=15797 read=25423
+                                                        ->  Hash  (cost=1.70..1.70 rows=70 width=7) (actual rows=70.00 loops=3)
+                                                              Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                                              Buffers: shared hit=3
+                                                              ->  Seq Scan on zone z  (cost=0.00..1.70 rows=70 width=7) (actual rows=70.00 loops=3)
+                                                                    Buffers: shared hit=3
+                                                  ->  Index Scan using rate_card_pkey on rate_card r  (cost=0.17..0.51 rows=1 width=27) (actual rows=3.58 loops=4000000)
+                                                        Index Cond: ((zone_id = z.zone_id) AND (kg_from <= ceil(GREATEST(s.weight_kg, ((((s.length_cm * s.width_cm) * s.height_cm))::numeric / 5000.0)))) AND (valid_from <= ((s.shipped_at AT TIME ZONE 'Europe/Berlin'::text))::date))
+                                                        Filter: (ceil(GREATEST(s.weight_kg, ((((s.length_cm * s.width_cm) * s.height_cm))::numeric / 5000.0))) < kg_to)
+                                                        Rows Removed by Filter: 11
+                                                        Index Searches: 4000000
+                                                        Buffers: shared hit=9496389
+                    ->  Hash  (cost=96.50..96.50 rows=250 width=17) (actual rows=250.00 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 21kB
+                          Buffers: shared hit=34
+                          ->  Seq Scan on customer c  (cost=0.00..96.50 rows=250 width=17) (actual rows=250.00 loops=1)
+                                Filter: (segment = 'Enterprise'::text)
+                                Rows Removed by Filter: 4750
+                                Buffers: shared hit=34
+              ->  Hash  (cost=13.12..13.12 rows=91 width=4) (actual rows=91.00 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                    Buffers: shared hit=4
+                    ->  Seq Scan on dim_date d  (cost=0.00..13.12 rows=91 width=4) (actual rows=91.00 loops=1)
+                          Filter: (fiscal_period = '2026-Q2'::text)
+                          Rows Removed by Filter: 639
+                          Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=478
+Planning Time: 1.465 ms
+JIT:
+  Functions: 87
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+Execution Time: 43560.783 ms

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Pricing example</title>
+<style>
+:root { --navy:#112B3C; --orange:#F66B0F; --neutral:#F2F5F7; --secondary:#586570; --line:#CBD6DE; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #FFFFFF; }
+body { width: 1240px; height: 640px; font-family: Inter, Arial, sans-serif; color: var(--navy); }
+.frame { padding: 40px 40px 30px; height: 100%; display: flex; flex-direction: column; }
+h1 { font-size: 34px; line-height: 1.15; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+.sub { font-size: 19px; color: var(--secondary); margin: 10px 0 0; }
+.row { display: grid; grid-template-columns: 1fr 26px 1fr 26px 1fr 26px 1fr; align-items: stretch; margin-top: 28px; flex: 1; }
+.card { background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 14px; padding: 20px 18px 18px; display: flex; flex-direction: column; }
+.head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.num { width: 38px; height: 38px; border-radius: 50%; background: var(--navy); color: #FFFFFF; font-weight: 700; font-size: 19px; display: flex; align-items: center; justify-content: center; flex: none; }
+.title { font-size: 22px; font-weight: 700; line-height: 1.15; }
+.item { margin: 0 0 14px; }
+.label { font-size: 16px; line-height: 1.3; color: var(--secondary); margin-bottom: 3px; }
+.value { font-size: 22px; font-weight: 600; line-height: 1.25; }
+.value.small { font-size: 18px; font-weight: 500; }
+.spacer { flex: 1; }
+.result { border: 2px solid var(--orange); border-radius: 12px; padding: 12px 14px; background: #FFFFFF; }
+.result .label { color: var(--secondary); }
+.result .value { font-size: 28px; font-weight: 700; }
+.final { background: var(--navy); border: none; border-radius: 12px; padding: 12px 14px; color: #FFFFFF; }
+.final .label { color: #C9D4DC; }
+.final .value { font-size: 32px; font-weight: 700; color: #FFFFFF; }
+.final .calc { font-size: 18px; color: #FFFFFF; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.arrow { display: flex; align-items: center; justify-content: center; }
+.arrow svg { width: 22px; height: 22px; }
+.rates { width: 100%; border-collapse: collapse; font-size: 17px; margin-bottom: 16px; }
+.rates td { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.rates td:last-child { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rates td:first-child { color: var(--secondary); }
+.foot { display: flex; justify-content: space-between; font-size: 15px; color: var(--secondary); margin-top: 18px; }
+.brand { font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <h1>How one shipment is priced</h1>
+  <p class="sub">Weight, postcode and shipping day each give one key; together they select one rate.</p>
+  <div class="row">
+    <div class="card">
+      <div class="head"><div class="num">1</div><div class="title">Weight</div></div>
+      <div class="item"><div class="label">Actual weight</div><div class="value">2.4 kg</div></div>
+      <div class="item"><div class="label">Dimensions</div><div class="value">40 × 20 × 20 cm</div></div>
+      <div class="item"><div class="label">Volumetric weight (÷ 5,000)</div><div class="value">3.2 kg</div></div>
+      <div class="item"><div class="label">Rule</div><div class="value small">The greater, rounded up</div></div>
+      <div class="spacer"></div>
+      <div class="result"><div class="label">Chargeable weight</div><div class="value">4 kg</div></div>
+    </div>
+    <div class="arrow"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 13h14M13 6l7 7-7 7" fill="none" stroke="#F66B0F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="card">
+      <div class="head"><div class="num">2</div><div class="title">Zone</div></div>
+      <div class="item"><div class="label">Destination postcode</div><div class="value">74008</div></div>
+      <div class="item"><div class="label">First two digits</div><div class="value">74</div></div>
+      <div class="item"><div class="label">Mapping</div><div class="value small">70 regions to 8 zones</div></div>
+      <div class="spacer"></div>
+      <div class="result"><div class="label">Region 74 is in</div><div class="value">Zone 3</div></div>
+    </div>
+    <div class="arrow"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 13h14M13 6l7 7-7 7" fill="none" stroke="#F66B0F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="card">
+      <div class="head"><div class="num">3</div><div class="title">Price list</div></div>
+      <div class="item"><div class="label">Handed over</div><div class="value small">15 June 2026, 09:40 CEST</div></div>
+      <div class="item"><div class="label">Local shipping day</div><div class="value">2026-06-15</div></div>
+      <div class="item"><div class="label">Rule</div><div class="value small">The latest list starting on or before that day</div></div>
+      <div class="spacer"></div>
+      <div class="result"><div class="label">Price list in force</div><div class="value">1 April 2026</div></div>
+    </div>
+    <div class="arrow"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 13h14M13 6l7 7-7 7" fill="none" stroke="#F66B0F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="card">
+      <div class="head"><div class="num">4</div><div class="title">Band and price</div></div>
+      <table class="rates">
+        <tr><td>Zone</td><td>3</td></tr>
+        <tr><td>Weight band</td><td>2–5 kg</td></tr>
+        <tr><td>Base price</td><td>€7.24</td></tr>
+        <tr><td>Price per kg</td><td>€0.505</td></tr>
+      </table>
+      <div class="spacer"></div>
+      <div class="final"><div class="calc">7.24 + 0.505 × 4</div><div class="value">€9.26</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Rates from the benchmark data set (setup.sql), not a real carrier tariff.</span><span>baremon.eu</span></div>
+</div>
+</body>
+</html>

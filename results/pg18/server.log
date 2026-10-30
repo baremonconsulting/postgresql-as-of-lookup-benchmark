@@ -1,0 +1,30 @@
+2026-10-29 16:08:10.408 CET [16268] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+2026-10-29 16:08:10.408 CET [16268] LOG:  listening on IPv4 address "127.0.0.1", port 5547
+2026-10-29 16:08:10.409 CET [16268] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5547"
+2026-10-29 16:08:10.413 CET [16274] LOG:  database system was shut down at 2026-10-29 16:08:10 CET
+2026-10-29 16:08:10.416 CET [16268] LOG:  database system is ready to accept connections
+2026-10-29 16:08:27.321 CET [16272] LOG:  checkpoints are occurring too frequently (17 seconds apart)
+2026-10-29 16:08:27.321 CET [16272] HINT:  Consider increasing the configuration parameter "max_wal_size".
+2026-10-29 16:08:27.321 CET [16272] LOG:  checkpoint starting: wal
+2026-10-29 16:08:43.492 CET [16272] LOG:  checkpoint complete: wrote 2210 buffers (13.5%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 33 recycled; write=14.299 s, sync=1.499 s, total=16.172 s; sync files=342, longest=0.284 s, average=0.005 s; distance=534423 kB, estimate=534423 kB; lsn=0/40A04130, redo lsn=0/22144930
+2026-10-29 16:08:47.710 CET [16272] LOG:  checkpoints are occurring too frequently (20 seconds apart)
+2026-10-29 16:08:47.710 CET [16272] HINT:  Consider increasing the configuration parameter "max_wal_size".
+2026-10-29 16:08:47.710 CET [16272] LOG:  checkpoint starting: wal
+2026-10-29 16:09:23.661 CET [16272] LOG:  checkpoint complete: wrote 10823 buffers (66.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 33 recycled; write=35.529 s, sync=0.384 s, total=35.952 s; sync files=112, longest=0.207 s, average=0.004 s; distance=540200 kB, estimate=540200 kB; lsn=0/61400058, redo lsn=0/430CEC78
+2026-10-29 16:09:24.902 CET [16272] LOG:  checkpoint starting: wal
+2026-10-29 16:09:36.289 CET [16272] LOG:  checkpoint complete: wrote 43 buffers (0.3%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 33 recycled; write=10.837 s, sync=0.527 s, total=11.388 s; sync files=35, longest=0.266 s, average=0.016 s; distance=541165 kB, estimate=541165 kB; lsn=0/825B2C48, redo lsn=0/6414A238
+2026-10-29 16:09:36.949 CET [16272] LOG:  checkpoints are occurring too frequently (12 seconds apart)
+2026-10-29 16:09:36.949 CET [16272] HINT:  Consider increasing the configuration parameter "max_wal_size".
+2026-10-29 16:09:36.952 CET [16272] LOG:  checkpoint starting: wal
+2026-10-29 16:09:44.470 CET [16272] LOG:  checkpoint complete: wrote 60 buffers (0.4%), wrote 1 SLRU buffers; 0 WAL file(s) added, 1 removed, 32 recycled; write=6.929 s, sync=0.550 s, total=7.521 s; sync files=14, longest=0.354 s, average=0.040 s; distance=539573 kB, estimate=541006 kB; lsn=0/A42A6AA8, redo lsn=0/85037700
+2026-10-29 16:09:44.536 CET [16272] LOG:  checkpoints are occurring too frequently (8 seconds apart)
+2026-10-29 16:09:44.536 CET [16272] HINT:  Consider increasing the configuration parameter "max_wal_size".
+2026-10-29 16:09:44.536 CET [16272] LOG:  checkpoint starting: wal
+2026-10-29 16:14:14.604 CET [16272] LOG:  checkpoint complete: wrote 6300 buffers (38.5%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 33 recycled; write=269.513 s, sync=0.283 s, total=270.068 s; sync files=127, longest=0.009 s, average=0.003 s; distance=541148 kB, estimate=541148 kB; lsn=0/B103EFB8, redo lsn=0/A60AE9D0
+2026-10-29 17:04:58.271 CET [16268] LOG:  received fast shutdown request
+2026-10-29 17:04:58.272 CET [16268] LOG:  aborting any active transactions
+2026-10-29 17:04:58.272 CET [16268] LOG:  background worker "logical replication launcher" (PID 16277) exited with exit code 1
+2026-10-29 17:04:58.275 CET [16272] LOG:  shutting down
+2026-10-29 17:04:58.275 CET [16272] LOG:  checkpoint starting: shutdown immediate
+2026-10-29 17:04:58.283 CET [16272] LOG:  checkpoint complete: wrote 12 buffers (0.1%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 11 recycled; write=0.001 s, sync=0.002 s, total=0.008 s; sync files=17, longest=0.001 s, average=0.001 s; distance=179777 kB, estimate=505011 kB; lsn=0/B103F068, redo lsn=0/B103F068
+2026-10-29 17:04:58.305 CET [16268] LOG:  database system is shut down

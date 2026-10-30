@@ -1,0 +1,6 @@
+shipments|4000000
+shipments priced in shipment_charge|4000000
+first and last local shipping day|2025-01-01 .. 2026-10-01
+shipments in 2026-Q2, all customers|568995
+shipments in the key-account report|28206
+shipments priced from another list with a UTC day|2118
